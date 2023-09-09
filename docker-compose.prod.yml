@@ -1,0 +1,5 @@
+services:
+  graphql:
+    environment:
+      - NODE_ENV=production
+    command: bun run start

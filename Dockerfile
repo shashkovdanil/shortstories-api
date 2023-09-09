@@ -8,10 +8,8 @@ RUN bun install
 
 COPY . .
 
-ENV DATABASE_URL=postgres://prisma:prisma@localhost:5432/mydb
-
 RUN bunx prisma generate
 
 EXPOSE 4000
 
-CMD [ "bun", "run", "index.ts" ]
+CMD [ "bun", "run", "start" ]

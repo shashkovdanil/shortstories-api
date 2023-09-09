@@ -1,0 +1,128 @@
+scalar Date
+
+type Me {
+  id: Int!
+  username: String!
+  info: String
+  email: String!
+}
+
+type User {
+  id: Int!
+  username: String!
+  info: String
+}
+
+type SuccessMessage {
+  message: String
+}
+
+type RequestReset {
+  email: String!
+}
+
+type Stats {
+  likes: [User!]!
+  dislikes: [User!]!
+  comments: Int!
+  views: [User]!
+}
+
+type Story {
+  id: Int!
+  title: String!
+  body: String!
+  user: User!
+  stats: Stats!
+  genre: Genre
+  length: Int!
+  createdAt: Date!
+}
+
+type Reaction {
+  id: Int!
+  state: String!
+  userId: Int!
+  storyId: Int!
+}
+
+type Genre {
+  id: Int!
+  name: String!
+}
+
+type View {
+  id: Int!
+  userId: Int
+  storyId: Int!
+}
+
+type StoryConnection {
+  edges: [Story]!
+  pageInfo: PageInfoStories!
+}
+
+type Comment {
+  id: Int!
+  commentId: Int
+  body: String
+  user: User!
+  createdAt: Date!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  endCursor: String!
+}
+
+type PageInfoStories {
+  offset: Int!
+  limit: Int!
+}
+
+type Query {
+  # Users
+  me: Me
+  user(id: Int!): User
+
+  # Stories
+  stories(
+    offset: Int = 0
+    limit: Int = 20
+    userId: Int
+    isLiked: Boolean = false
+    length: String
+    genres: [Int]
+    mostLiked: Boolean = false
+    mostViewed: Boolean = false
+    mostCommented: Boolean = false
+  ): StoryConnection!
+  story(id: Int!): Story!
+  reactions(storyId: Int!): [Reaction!]!
+  genres: [Genre]
+
+  # Comments
+  comments(cursor: String, limit: Int = 10, storyId: Int!): [Comment!]!
+}
+
+type Mutation {
+  # Users
+  signOut: SuccessMessage
+  checkUserExists(login: String!): Boolean!
+  updateUser(username: String!, info: String): Me!
+  sendMagicLink(email: String!): SuccessMessage
+  magicLinkAuth(token: String!): Me!
+
+  # Stories
+  createStory(title: String!, body: String!, genreId: Int!): Story!
+  updateStory(id: Int!, title: String!, body: String!, genreId: Int!): Story!
+  likeStory(id: Int!): Reaction!
+  dislikeStory(id: Int!): Reaction!
+  viewStory(id: Int!): View!
+  deleteStory(id: Int!): Story!
+
+  # Comments
+  createComment(id: Int!, body: String!, commentId: Int): Comment!
+  updateComment(id: Int!, body: String!): Comment!
+  deleteComment(id: Int!, hasChildren: Boolean!, commentId: Int): Comment!
+}

@@ -2,6 +2,10 @@
   "name": "shortstories-api",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun --watch run index.ts",
+    "start": "prisma migrate deploy && bun run index.ts"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
@@ -16,7 +20,9 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@apollo/server": "^4.9.3",
     "@prisma/client": "5.2.0",
+    "graphql": "^16.8.0",
     "prisma": "^5.2.0"
   }
 }

@@ -1,0 +1,8 @@
+services:
+  graphql:
+    environment:
+      - NODE_ENV=development
+    command: bun run dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
