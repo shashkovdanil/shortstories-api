@@ -1,4 +1,8 @@
-console.log('hello world')
+const server = Bun.serve({
+  port: 4000,
+  fetch() {
+    return new Response('Hello World!')
+  },
+})
 
-const a: any = 0
-console.log(a)
+console.log(`Listening on port ${server.port}`)

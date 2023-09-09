@@ -1,20 +1,24 @@
 services:
-  app:
-    container_name: shortstories_api
+  graphql:
+    container_name: graphql
     build:
       context: .
+    ports:
+      - "4000:4000"
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      - DATABASE_URL=${DATABASE_URL}
     depends_on:
       - db
 
   db:
-    container_name: shortstories_db
-    image: postgres:15
+    container_name: db
+    image: postgres:latest
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
 
